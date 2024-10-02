@@ -4,7 +4,7 @@
 
 ## Descrição
 
-O **Diff Generator CLI** é uma ferramenta de linha de comando desenvolvida em Java com Spring Boot que permite gerar arquivos de diferença (diff) entre dois arquivos. A ferramenta recebe três argumentos de entrada: o caminho do arquivo de origem, o caminho do arquivo de destino e o caminho para o arquivo de saída.
+O Diff Generator CLI é uma ferramenta de linha de comando desenvolvida em Java com Spring Boot que permite gerar arquivos de diferença (diff) entre dois arquivos. A ferramenta recebe três argumentos de entrada obrigatórios: o caminho do arquivo de origem, o caminho do arquivo de destino e o caminho para o arquivo de saída. Além disso, também há um argumento opcional para definir um tempo limite (timeout) para a operação.
 
 ## Funcionalidades
  Gera um arquivo de diff entre um arquivo fonte e um arquivo alvo.
@@ -24,23 +24,15 @@ src/
 
 ````
 
-## Pré-requisitos
-
-Antes de usar a ferramenta, certifique-se de ter as seguintes ferramentas instaladas:
-
-- [Java 17 ou superior](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html)
-- [Maven](https://maven.apache.org/download.cgi) (para compilar o projeto)
-- [Git](https://git-scm.com/downloads) (opcional, para controle de versão)
-
-## Gerando o Arquivo JAR Standalone no Eclipse
-
-Para gerar um arquivo JAR standalone que pode ser executado via linha de comando, siga os passos abaixo usando o Eclipse:
-
 ### Pré-requisitos
 
 - Eclipse IDE com suporte a projetos Java.
 - Java Development Kit (JDK) 17 ou superior instalado.
 - Projeto configurado no Eclipse.
+
+## Gerando o Arquivo JAR Standalone no Eclipse
+
+Para gerar um arquivo JAR standalone que pode ser executado via linha de comando, siga os passos abaixo usando o Eclipse:
 
 ### Passos para Gerar o JAR Executável
 
@@ -66,9 +58,9 @@ Para gerar um arquivo JAR standalone que pode ser executado via linha de comando
 
 ## Executando o Projeto via CLI
 
-O **Diff Generator CLI** é executado via linha de comando e requer três argumentos obrigatórios: o arquivo de origem (`--source`), o arquivo de destino (`--target`) e o arquivo de saída (`--output`). A seguir estão os detalhes de como executar o projeto.
+O Diff Generator CLI é executado via linha de comando e requer três argumentos obrigatórios: o arquivo de origem (`--source`), o arquivo de destino (`--target`) e o arquivo de saída (`--output`). Além disso, há um argumento opcional para definir um tempo limite para a operação (`--timeout`), que especifica quantos segundos a geração do diff pode levar antes de ser cancelada.
 
-### Comando para Execução
+### Comando
 
 ```bash
 java -jar target/diff-generator-cli.jar --source <caminho-do-arquivo-fonte> --target <caminho-do-arquivo-alvo> --output <caminho-do-arquivo-de-saida>
