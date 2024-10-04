@@ -5,18 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
+
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import br.com.stone.tms.bsdiff.cli.core.FileByFileV1DeltaGenerator;
 import br.com.stone.tms.bsdiff.cli.shared.DefaultDeflateCompatibilityWindow;
 import picocli.CommandLine;
@@ -49,9 +43,8 @@ public class Application implements Runnable {
 
 	@Override
 	public void run() {
-
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
-		
+
 		Callable<Void> task = () -> {
 			generateDiff();
 			return null;
@@ -61,29 +54,34 @@ public class Application implements Runnable {
 
 		try {
 			if (timeout != null) {
+				System.out.println("[INFO] Processing with timeout of " + timeout + " seconds.");
 				future.get(timeout, TimeUnit.SECONDS);
 			} else {
+				System.out.println("[INFO] Processing without timeout.");
 				future.get();
 			}
+
+			System.out.println("[SUCCESS] Diff file created successfully.");
+			System.exit(0);
 		} catch (TimeoutException e) {
-			System.err.println("Operation timed out after " + timeout + " seconds.");
 			future.cancel(true);
+			System.err.println("[ERROR] Operation timed out after " + timeout + " seconds.");
+			System.exit(2);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("[ERROR] An unexpected error occurred: " + e.getMessage());
+			System.exit(1);
 		} finally {
 			executorService.shutdown();
 		}
-
 	}
 
 	private void generateDiff() throws FileNotFoundException, IOException, InterruptedException {
-
 		File sourceFile = new File(sourcePath);
 		File targetFile = new File(targetPath);
 
 		if (!new DefaultDeflateCompatibilityWindow().isCompatible()) {
-			System.err.println("zlib not compatible on this system");
-			System.exit(-1);
+			System.err.println("[ERROR] zlib not compatible on this system");
+			System.exit(3);
 		}
 
 		Deflater compressor = new Deflater(9, true);
@@ -99,5 +97,4 @@ public class Application implements Runnable {
 			compressor.end();
 		}
 	}
-
 }
