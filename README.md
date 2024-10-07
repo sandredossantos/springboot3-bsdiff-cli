@@ -63,4 +63,34 @@ O Diff Generator CLI é executado via linha de comando e requer três argumentos
 ### Comando
 
 ```bash
-java -jar target/diff-generator-cli.jar --source <caminho-do-arquivo-fonte> --target <caminho-do-arquivo-alvo> --output <caminho-do-arquivo-de-saida>
+java -jar path/bsdiff-cli.jar
+--source <caminho-do-arquivo-fonte>
+--target <caminho-do-arquivo-alvo>
+--output <caminho-do-arquivo-de-saida>
+--timout <tempo-em-segundos>
+````
+
+## Possíveis Outputs da CLI
+
+Diferentes saídas podem ser observadas dependendo do resultado da operação. Abaixo estão as explicações para os possíveis outputs da ferramenta:
+
+1. **Criação bem-sucedida do arquivo diff**  
+   - **Mensagem**: `[SUCCESS] Diff file created successfully.`  
+   - **Descrição**: Essa mensagem é exibida quando o arquivo diff foi gerado com sucesso entre o arquivo source e o arquivo target, sendo salvo no caminho de saída especificado (output).  
+   - **Código de saída**: 0
+
+2. **Erro de Timeout**  
+   - **Mensagem**: `[ERROR] Operation timed out after {timeout} seconds.`  
+   - **Descrição**: Caso a geração do diff exceda o tempo limite definido (via a opção `--timeout`), a operação é abortada e essa mensagem é exibida. O processo é encerrado.  
+   - **Código de saída**: 2
+
+3. **Erro inesperado**  
+   - **Mensagem**: `[ERROR] An unexpected error occurred: {mensagem de erro}.`  
+   - **Descrição**: Se ocorrer uma exceção inesperada durante a execução, essa mensagem será exibida, incluindo detalhes do erro para auxiliar no diagnóstico.  
+   - **Código de saída**: 1
+
+4. **Erro de compatibilidade com zlib**  
+   - **Mensagem**: `[ERROR] zlib not compatible on this system.`  
+   - **Descrição**: Antes de gerar o arquivo diff, a ferramenta verifica se a biblioteca de compressão zlib é compatível com o sistema. Caso não seja, a operação é interrompida e essa mensagem é exibida.  
+   - **Código de saída**: 3
+
